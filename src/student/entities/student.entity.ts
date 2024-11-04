@@ -6,10 +6,12 @@ import {
   IsString,
   Length,
 } from 'class-validator';
+import { StudentClass } from 'src/studentClass/entities/student.class.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -70,4 +72,7 @@ export class Student {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
+
+  @OneToMany(() => StudentClass, (studentClass) => studentClass.student)
+  studentClass: StudentClass[];
 }
