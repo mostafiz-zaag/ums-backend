@@ -6,7 +6,6 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 export class Subject {
   @PrimaryGeneratedColumn()
   subject_id: number;
-
   @Column()
   max_capacity: number;
 
