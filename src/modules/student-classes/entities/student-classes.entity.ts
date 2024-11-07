@@ -12,8 +12,8 @@ export class StudentClasses {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany((type) => StudentClasses, (student) => student.student)
-  studentClassList: StudentClasses[];
+  // @OneToMany((type) => StudentClasses, (student) => student.student)
+  // studentClassList: StudentClasses[];
 
   @Column({ name: 'student_id' })
   studentId: number;
