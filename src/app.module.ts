@@ -1,30 +1,27 @@
 // src/app.module.ts
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
+import { databaseConfig } from './configs/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StudentModule } from './student/student.module';
-import { TeacherModule } from './teacher/teacher.module';
+import { TeacherModule } from './modules/teacher/teacher.module';
+import { StudentModule } from './modules/student/student.module';
+import { ClassModule } from './modules/class/class.module';
+import { ClassroomModule } from './modules/classroom/classroom.module';
+import { SubjectModule } from './modules/subject/subject.module';
+import { StudentClassesModule } from './modules/student-classes/student-classes.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
-        autoLoadEntities: true,
-      }),
-    }),
-    StudentModule,
+    TypeOrmModule.forRoot(databaseConfig),
     TeacherModule,
+    StudentModule,
+    ClassModule,
+    ClassroomModule,
+    SubjectModule,
+    StudentClassesModule,
   ],
 })
 export class AppModule {}
