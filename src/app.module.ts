@@ -6,9 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { StudentModule } from './modules/student/student.module';
 import { ClassModule } from './modules/class/class.module';
-import { ClassroomModule } from './modules/classroom/classroom.module';
-import { SubjectModule } from './modules/subject/subject.module';
-import { StudentClassesModule } from './modules/student-classes/student-classes.module';
+import { SectionModule } from './modules/section/section.module';
 
 @Module({
   imports: [
@@ -19,9 +17,7 @@ import { StudentClassesModule } from './modules/student-classes/student-classes.
     TeacherModule,
     StudentModule,
     ClassModule,
-    ClassroomModule,
-    SubjectModule,
-    StudentClassesModule,
+    SectionModule,
   ],
 })
 export class AppModule {}

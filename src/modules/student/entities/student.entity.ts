@@ -1,99 +1,53 @@
-import {
-  BeforeUpdate,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
-import {
-  IsEmail,
-  IsEnum,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length,
-} from 'class-validator';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Section } from '../../section/entities/section.entity';
+import { Gender } from '../../../enums';
+import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
 
-enum Gender {
-  MALE = 'male',
-  FEMALE = 'female',
-  OTHER = 'other',
-}
-
-@Entity('students')
+@Entity()
 export class Student {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsNotEmpty({ message: 'First name must not be empty' })
+  @Column({ name: 'first_name' })
   @IsString({ message: 'First name must be a string' })
-  @Length(2, 50, { message: 'First name size between 2 to 50 characters long' })
-  @Column({ name: 'first_name', nullable: false, length: 50 })
+  @Length(1, 50, { message: 'First name must be between 1 and 50 characters' })
   firstName: string;
 
-  @IsOptional()
+  @Column({ name: 'middle_name', length: 50, nullable: true })
   @IsString({ message: 'Middle name must be a string' })
-  @Length(2, 50, {
-    message: 'Middle name size must be between 2 and 50 characters',
-  })
-  @Column({ name: 'middle_name', nullable: true, length: 50 })
+  @Length(0, 50, { message: 'Middle name must not exceed 50 characters' })
   middleName?: string;
 
-  @IsNotEmpty({ message: 'Last name must not be empty' })
+  @Column({ name: 'last_name', length: 50 })
   @IsString({ message: 'Last name must be a string' })
-  @Length(2, 50, { message: 'Last name size between 2 to 50 characters long' })
-  @Column({ name: 'last_name', nullable: false, length: 50 })
+  @Length(1, 50, { message: 'Last name must be between 1 and 50 characters' })
   lastName: string;
 
-  @IsNotEmpty({ message: 'Email must not be empty' })
+  @Column({ unique: true })
   @IsEmail({}, { message: 'Please provide a valid email address' })
-  @Length(5, 100, {
-    message: 'Email size must be between 5 to 100 characters long',
-  })
-  @Column({ nullable: false, length: 100, unique: true })
   email: string;
 
-  @IsNotEmpty({ message: 'Gender must not be empty' })
-  @IsEnum(Gender, { message: 'Gender must be one of: male, female, or other' })
   @Column({ type: 'enum', enum: Gender })
+  @IsEnum(Gender, { message: 'Gender must be either Male or Female' })
   gender: Gender;
 
-  @IsNotEmpty({ message: 'Phone number must not be empty' })
-  @IsString({ message: 'Phone number must be a string' })
-  @Column({ name: 'phone_number' })
-  phoneNumber: string;
-
-  @IsNotEmpty({ message: 'Address must not be empty' })
-  @IsString({ message: 'Address must be a string' })
-  @Length(2, 100, {
-    message: 'Address size must be between 2 to 100 characters long',
-  })
-  @Column({ nullable: false, length: 100 })
-  address: string;
-
-  @IsNotEmpty({ message: 'Date of birth must not be empty' })
-  @IsInt({ message: 'Date of birth must be a valid UNIX timestamp' })
-  @Column({ name: 'date_of_birth', nullable: false, type: 'bigint' })
+  @Column({ name: 'date_of_birth', type: 'bigint' })
+  @IsNotEmpty({ message: 'Date of birth is required' })
   dateOfBirth: number;
 
-  @IsOptional()
-  @IsInt({ message: 'CreatedAt must be a valid UNIX timestamp' })
-  @Column({
-    name: 'created_at',
-    type: 'bigint',
-    default: () => 'EXTRACT(EPOCH FROM NOW())::bigint',
+  @Column({ length: 15 })
+  @Length(10, 15, {
+    message: 'Phone number must be between 10 and 15 characters',
   })
-  createdAt: number;
+  phoneNumber: string;
 
-  @IsOptional()
-  @IsInt({ message: 'UpdatedAt must be a valid UNIX timestamp' })
-  @Column({ name: 'updated_at', type: 'bigint', nullable: true })
-  updatedAt?: number;
+  @Column({ length: 100 })
+  @IsString({ message: 'Address must be a string' })
+  @Length(1, 100, { message: 'Address must be between 1 and 100 characters' })
+  address: string;
 
-  @BeforeUpdate()
-  setUpdatedAt() {
-    this.updatedAt = Math.floor(Date.now() / 1000);
-  }
+  @ManyToOne(() => Section, (section) => section.students, {
+    onDelete: 'SET NULL',
+  })
+  section: Section;
 }
