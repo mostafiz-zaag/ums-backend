@@ -1,11 +1,12 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
-  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Class } from '../../class/entities/class.entity';
+import { Course } from '../../course/entities/course.entity';
 import { Student } from '../../student/entities/student.entity';
 
 @Entity()
@@ -16,9 +17,10 @@ export class Section {
   @Column()
   name: string;
 
-  @ManyToOne(() => Class, (cls) => cls.sections, { onDelete: 'CASCADE' })
-  class: Class;
+  @ManyToOne(() => Course, (course) => course.sections)
+  course: Course;
 
-  @OneToMany(() => Student, (student) => student.section)
+  @ManyToMany(() => Student, (student) => student.sections)
+  @JoinTable()
   students: Student[];
 }

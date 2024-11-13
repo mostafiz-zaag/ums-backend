@@ -1,7 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Section } from '../../section/entities/section.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Gender } from '../../../enums';
 import { IsEmail, IsEnum, IsNotEmpty, IsString, Length } from 'class-validator';
+import { Course } from '../../course/entities/course.entity';
+import { Section } from '../../section/entities/section.entity';
 
 @Entity()
 export class Student {
@@ -41,13 +48,18 @@ export class Student {
   })
   phoneNumber: string;
 
-  @Column({ length: 100 })
-  @IsString({ message: 'Address must be a string' })
-  @Length(1, 100, { message: 'Address must be between 1 and 100 characters' })
-  address: string;
-
-  @ManyToOne(() => Section, (section) => section.students, {
-    onDelete: 'SET NULL',
+  @IsNotEmpty({ message: 'password can not be empty' })
+  @Length(6, 50, {
+    message: 'Password length must be between 6 to 50 characters',
   })
-  section: Section;
+  @Column({ length: 50, nullable: false })
+  password: string;
+
+  @ManyToMany(() => Course, (course) => course.students)
+  @JoinTable()
+  courses: Course[];
+
+  @ManyToMany(() => Section, (section) => section.students)
+  @JoinTable()
+  sections: Section[];
 }
