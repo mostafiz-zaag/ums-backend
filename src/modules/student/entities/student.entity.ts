@@ -15,20 +15,10 @@ export class Student {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'first_name' })
-  @IsString({ message: 'First name must be a string' })
-  @Length(1, 50, { message: 'First name must be between 1 and 50 characters' })
-  firstName: string;
-
-  @Column({ name: 'middle_name', length: 50, nullable: true })
-  @IsString({ message: 'Middle name must be a string' })
-  @Length(0, 50, { message: 'Middle name must not exceed 50 characters' })
-  middleName?: string;
-
-  @Column({ name: 'last_name', length: 50 })
-  @IsString({ message: 'Last name must be a string' })
-  @Length(1, 50, { message: 'Last name must be between 1 and 50 characters' })
-  lastName: string;
+  @Column()
+  @IsString({ message: 'name must be a string' })
+  @Length(2, 50, { message: 'name must be between 2 and 50 characters' })
+  name: string;
 
   @Column({ unique: true })
   @IsEmail({}, { message: 'Please provide a valid email address' })
@@ -37,10 +27,6 @@ export class Student {
   @Column({ type: 'enum', enum: Gender })
   @IsEnum(Gender, { message: 'Gender must be either Male or Female' })
   gender: Gender;
-
-  @Column({ name: 'date_of_birth', type: 'bigint' })
-  @IsNotEmpty({ message: 'Date of birth is required' })
-  dateOfBirth: number;
 
   @Column({ length: 15 })
   @Length(10, 15, {
