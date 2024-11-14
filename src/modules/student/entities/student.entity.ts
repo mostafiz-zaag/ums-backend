@@ -41,11 +41,15 @@ export class Student {
   @Column({ length: 50, nullable: false })
   password: string;
 
-  @ManyToMany(() => Course, (course) => course.students)
+  @ManyToMany(() => Course, (course) => course.students, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   courses: Course[];
 
-  @ManyToMany(() => Section, (section) => section.students)
+  @ManyToMany(() => Section, (section) => section.students, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   sections: Section[];
 }

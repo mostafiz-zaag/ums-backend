@@ -8,7 +8,7 @@ export class CreateTeacherDto {
   @IsEmail({}, { message: 'Please provide a valid email address' })
   email: string;
 
-  @IsString({ message: 'Subject must be a string' })
-  @Length(1, 100, { message: 'Subject must be between 1 and 100 characters' })
-  subject: string;
+  @IsString({ message: 'password must be a string' })
+  @Length(6, 50, { message: 'password must be between 6 and 50 characters' })
+  password: string;
 }

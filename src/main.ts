@@ -18,11 +18,10 @@ async function start() {
       transform: true,
     }),
   );
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   configureWebSettings(app);
   await app.listen(envConfig.SERVER_PORT);
-
-  app.useGlobalInterceptors(new LoggingInterceptor());
 }
 
 start();

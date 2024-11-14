@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -21,6 +20,5 @@ export class Section {
   course: Course;
 
   @ManyToMany(() => Student, (student) => student.sections)
-  @JoinTable()
   students: Student[];
 }
