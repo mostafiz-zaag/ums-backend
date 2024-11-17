@@ -2,7 +2,7 @@ import { IsEmail, IsString, Length } from 'class-validator';
 
 export class CreateTeacherDto {
     @IsString({ message: 'Name must be a string' })
-    @Length(1, 50, { message: 'Name must be between 1 and 50 characters' })
+    @Length(2, 50, { message: 'Name must be between 2 and 50 characters' })
     name: string;
 
     @IsEmail({}, { message: 'Please provide a valid email address' })

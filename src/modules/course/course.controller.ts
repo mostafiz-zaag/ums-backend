@@ -19,7 +19,6 @@ export class CourseController {
         };
     }
 
-    //TODO : Update this api domain
     @Get('/id/:courseId')
     async findById(
         @Param('courseId') courseId: number,

@@ -3,7 +3,7 @@ import { TeacherService } from './teacher.service';
 import { CreateTeacherDto } from './dto/create.teacher.dto';
 import { Teacher } from './entities/teacher.entity';
 
-@Controller('teacher')
+@Controller('teachers')
 export class TeacherController {
     constructor(private readonly teacherService: TeacherService) {}
 

@@ -44,6 +44,10 @@ export class TeacherService {
             relations: ['courses'],
         });
 
+        if (!teacher) {
+            throw new NotFoundException('teacher not found');
+        }
+
         const course = await this.courseRepository.findOne({
             where: { id: courseId },
         });
