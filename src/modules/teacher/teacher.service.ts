@@ -92,4 +92,8 @@ export class TeacherService {
         delete teacher.password;
         return teacher;
     }
+
+    async findAll(): Promise<Teacher[]> {
+        return await this.teacherRepository.find({});
+    }
 }

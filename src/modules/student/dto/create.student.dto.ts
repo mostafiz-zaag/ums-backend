@@ -21,10 +21,6 @@ export class CreateStudentDTO {
     @Length(6, 50, {
         message: 'Password length must be between 6 to 50 characters',
     })
-    @Matches(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{6,}$/, {
-        message:
-            'Password must contain at least one uppercase letter, one number, and one special character',
-    })
     password: string;
 
     @IsEnum(Gender, {

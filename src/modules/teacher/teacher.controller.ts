@@ -46,4 +46,13 @@ export class TeacherController {
             data: await this.teacherService.findById(teacherId),
         };
     }
+
+    @Get()
+    async findAll() {
+        const teachers = await this.teacherService.findAll();
+        return {
+            message: 'Teacher fetched successfully.',
+            data: teachers,
+        };
+    }
 }
