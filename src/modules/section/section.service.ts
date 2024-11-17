@@ -5,20 +5,24 @@ import { Section } from './entities/section.entity';
 
 @Injectable()
 export class SectionService {
-  constructor(private readonly sectionRepository: SectionRepository) {}
+    constructor(private readonly sectionRepository: SectionRepository) {}
 
-  async create(createSectionDto: CreateSectionDto): Promise<Section> {
-    const { name } = createSectionDto;
-    const exist = await this.sectionRepository.findOne({
-      where: { name },
-    });
+    async create(createSectionDto: CreateSectionDto): Promise<Section> {
+        const { name } = createSectionDto;
+        const exist = await this.sectionRepository.findOne({
+            where: { name },
+        });
 
-    if (exist) {
-      throw new UnauthorizedException(
-        `Section already exists with name ${name}`,
-      );
+        if (exist) {
+            throw new UnauthorizedException(
+                `Section already exists with name ${name}`,
+            );
+        }
+        const section = this.sectionRepository.create(createSectionDto);
+        return await this.sectionRepository.save(section);
     }
-    const section = this.sectionRepository.create(createSectionDto);
-    return await this.sectionRepository.save(section);
-  }
+
+    async findAll() {
+        return await this.sectionRepository.find();
+    }
 }

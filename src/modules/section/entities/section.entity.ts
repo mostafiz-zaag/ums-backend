@@ -1,24 +1,24 @@
 import {
-  Column,
-  Entity,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
+    Column,
+    Entity,
+    ManyToMany,
+    ManyToOne,
+    PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Course } from '../../course/entities/course.entity';
 import { Student } from '../../student/entities/student.entity';
 
 @Entity()
 export class Section {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @ManyToOne(() => Course, (course) => course.sections)
-  course: Course;
+    @ManyToOne(() => Course, (course) => course.sections)
+    course: Course;
 
-  @ManyToMany(() => Student, (student) => student.sections)
-  students: Student[];
+    @ManyToMany(() => Student, (student) => student.sections)
+    students: Student[];
 }

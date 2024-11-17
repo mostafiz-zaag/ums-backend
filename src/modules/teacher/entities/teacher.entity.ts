@@ -3,18 +3,18 @@ import { Course } from '../../course/entities/course.entity';
 
 @Entity()
 export class Teacher {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  name: string;
+    @Column()
+    name: string;
 
-  @Column({ unique: true })
-  email: string;
+    @Column({ unique: true })
+    email: string;
 
-  @Column()
-  password: string;
+    @Column()
+    password: string;
 
-  @OneToMany(() => Course, (course) => course.teacher)
-  courses: Course[];
+    @OneToMany(() => Course, (course) => course.teacher)
+    courses: Course[];
 }

@@ -5,45 +5,45 @@ import { Teacher } from './entities/teacher.entity';
 
 @Controller('teacher')
 export class TeacherController {
-  constructor(private readonly teacherService: TeacherService) {}
+    constructor(private readonly teacherService: TeacherService) {}
 
-  @Post('/register')
-  async register(
-    @Body() createTeachersDto: CreateTeacherDto,
-  ): Promise<{ message: string; data: Teacher }> {
-    const teacher = await this.teacherService.register(createTeachersDto);
+    @Post('/register')
+    async register(
+        @Body() createTeachersDto: CreateTeacherDto,
+    ): Promise<{ message: string; data: Teacher }> {
+        const teacher = await this.teacherService.register(createTeachersDto);
 
-    return {
-      message: 'Teacher created successful',
-      data: teacher,
-    };
-  }
+        return {
+            message: 'Teacher created successful',
+            data: teacher,
+        };
+    }
 
-  @Post(':teacherId/courses/:courseId')
-  async assignCourseToTeacher(
-    @Param('teacherId') teacherId: number,
-    @Param('courseId') courseId: number,
-  ): Promise<{
-    message: string;
-    data: Teacher;
-  }> {
-    const teacher = await this.teacherService.assignCourseToTeacher(
-      teacherId,
-      courseId,
-    );
-    return {
-      message: 'Course assign successful',
-      data: teacher,
-    };
-  }
+    @Post(':teacherId/courses/:courseId')
+    async assignCourseToTeacher(
+        @Param('teacherId') teacherId: number,
+        @Param('courseId') courseId: number,
+    ): Promise<{
+        message: string;
+        data: Teacher;
+    }> {
+        const teacher = await this.teacherService.assignCourseToTeacher(
+            teacherId,
+            courseId,
+        );
+        return {
+            message: 'Course assign successful',
+            data: teacher,
+        };
+    }
 
-  @Get('/:teacherId')
-  async findById(
-    @Param('teacherId') teacherId: number,
-  ): Promise<{ message: string; data: Teacher }> {
-    return {
-      message: 'Teacher fetched successfully',
-      data: await this.teacherService.findById(teacherId),
-    };
-  }
+    @Get('/:teacherId')
+    async findById(
+        @Param('teacherId') teacherId: number,
+    ): Promise<{ message: string; data: Teacher }> {
+        return {
+            message: 'Teacher fetched successfully',
+            data: await this.teacherService.findById(teacherId),
+        };
+    }
 }

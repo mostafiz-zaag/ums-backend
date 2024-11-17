@@ -8,15 +8,15 @@ import { CourseService } from '../course/course.service';
 import { CourseRepository } from '../course/course.repository';
 
 @Module({
-  controllers: [StudentController],
-  providers: [
-    StudentService,
-    StudentRepository,
-    SectionService,
-    SectionRepository,
-    CourseService,
-    CourseRepository,
-  ],
-  exports: [StudentService, SectionService, CourseService],
+    controllers: [StudentController],
+    providers: [
+        StudentService,
+        StudentRepository,
+        SectionService,
+        SectionRepository,
+        CourseService,
+        CourseRepository,
+    ],
+    exports: [StudentService, SectionService, CourseService],
 })
 export class StudentModule {}

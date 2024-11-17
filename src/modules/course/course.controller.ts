@@ -5,35 +5,36 @@ import { Course } from './entities/course.entity';
 
 @Controller('courses')
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
+    constructor(private readonly courseService: CourseService) {}
 
-  @Post('/create')
-  async create(
-    @Body() createCourseDto: CreateCourseDTO,
-  ): Promise<{ message: string; data: Course }> {
-    const course = await this.courseService.create(createCourseDto);
+    @Post('/create')
+    async create(
+        @Body() createCourseDto: CreateCourseDTO,
+    ): Promise<{ message: string; data: Course }> {
+        const course = await this.courseService.create(createCourseDto);
 
-    return {
-      message: 'Course created successfully.',
-      data: course,
-    };
-  }
+        return {
+            message: 'Course created successfully.',
+            data: course,
+        };
+    }
 
-  @Get('/id/:courseId')
-  async findById(
-    @Param('courseId') courseId: number,
-  ): Promise<{ message: string; data: Course }> {
-    return {
-      message: 'Course fetched successfully',
-      data: await this.courseService.findById(courseId),
-    };
-  }
+    //TODO : Update this api domain
+    @Get('/id/:courseId')
+    async findById(
+        @Param('courseId') courseId: number,
+    ): Promise<{ message: string; data: Course }> {
+        return {
+            message: 'Course fetched successfully',
+            data: await this.courseService.findById(courseId),
+        };
+    }
 
-  @Get()
-  async findAll(): Promise<{ message: string; data: Course[] }> {
-    return {
-      message: 'Course fetched successfully',
-      data: await this.courseService.findAll(),
-    };
-  }
+    @Get()
+    async findAll(): Promise<{ message: string; data: Course[] }> {
+        return {
+            message: 'Course fetched successfully',
+            data: await this.courseService.findAll(),
+        };
+    }
 }

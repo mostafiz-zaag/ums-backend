@@ -1,8 +1,8 @@
 import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
+    ConflictException,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { TeacherRepository } from './teacher.repository';
 import { CreateTeacherDto } from './dto/create.teacher.dto';
@@ -12,80 +12,80 @@ import { CourseRepository } from '../course/course.repository';
 
 @Injectable()
 export class TeacherService {
-  constructor(
-    private readonly teacherRepository: TeacherRepository,
-    private readonly courseRepository: CourseRepository,
-  ) {}
+    constructor(
+        private readonly teacherRepository: TeacherRepository,
+        private readonly courseRepository: CourseRepository,
+    ) {}
 
-  async register(createTeacherDto: CreateTeacherDto): Promise<Teacher> {
-    const { email, password } = createTeacherDto;
+    async register(createTeacherDto: CreateTeacherDto): Promise<Teacher> {
+        const { email, password } = createTeacherDto;
 
-    const user = await this.teacherRepository.findOne({ where: { email } });
-    if (user) {
-      throw new UnauthorizedException('User already exists');
+        const user = await this.teacherRepository.findOne({ where: { email } });
+        if (user) {
+            throw new UnauthorizedException('User already exists');
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const teacher = this.teacherRepository.create({
+            ...createTeacherDto,
+            password: hashedPassword,
+        });
+
+        return await this.teacherRepository.save(teacher);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    async assignCourseToTeacher(
+        teacherId: number,
+        courseId: number,
+    ): Promise<Teacher> {
+        const teacher = await this.teacherRepository.findOne({
+            where: { id: teacherId },
+            relations: ['courses'],
+        });
 
-    const teacher = this.teacherRepository.create({
-      ...createTeacherDto,
-      password: hashedPassword,
-    });
+        const course = await this.courseRepository.findOne({
+            where: { id: courseId },
+        });
 
-    return await this.teacherRepository.save(teacher);
-  }
+        console.log(course);
 
-  async assignCourseToTeacher(
-    teacherId: number,
-    courseId: number,
-  ): Promise<Teacher> {
-    const teacher = await this.teacherRepository.findOne({
-      where: { id: teacherId },
-      relations: ['courses'],
-    });
+        if (!teacher) {
+            throw new NotFoundException('Teacher not found');
+        }
+        if (!course) {
+            throw new NotFoundException('course not found');
+        }
 
-    const course = await this.courseRepository.findOne({
-      where: { id: courseId },
-    });
+        const existingCourse = teacher.courses.some(
+            (c) => c.title === course.title,
+        );
 
-    console.log(course);
+        if (existingCourse) {
+            throw new ConflictException(
+                `course already assign to teacher '${teacher.name}'`,
+            );
+        }
 
-    if (!teacher) {
-      throw new NotFoundException('Teacher not found');
-    }
-    if (!course) {
-      throw new NotFoundException('course not found');
-    }
+        teacher.courses.push(course);
 
-    const existingCourse = teacher.courses.some(
-      (c) => c.title === course.title,
-    );
+        await this.teacherRepository.save(teacher);
 
-    if (existingCourse) {
-      throw new ConflictException(
-        `course already assign to teacher '${teacher.name}'`,
-      );
+        delete teacher.password;
+        return teacher;
     }
 
-    teacher.courses.push(course);
+    async findById(id: number): Promise<Teacher> {
+        const teacher = await this.teacherRepository.findOne({
+            where: { id: id },
+            relations: ['courses'],
+        });
 
-    await this.teacherRepository.save(teacher);
+        if (!teacher) {
+            throw new NotFoundException('Teacher not found');
+        }
 
-    delete teacher.password;
-    return teacher;
-  }
-
-  async findById(id: number): Promise<Teacher> {
-    const teacher = await this.teacherRepository.findOne({
-      where: { id: id },
-      relations: ['courses'],
-    });
-
-    if (!teacher) {
-      throw new NotFoundException('Teacher not found');
+        delete teacher.password;
+        return teacher;
     }
-
-    delete teacher.password;
-    return teacher;
-  }
 }
