@@ -25,7 +25,7 @@ export class StudentService {
         });
 
         if (user) {
-            throw new UnauthorizedException('User already exists');
+            throw new UnauthorizedException('User already exists.');
         }
 
         const student = this.studentRepository.create(createStudentDto);

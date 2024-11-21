@@ -9,15 +9,15 @@ import { SectionModule } from './modules/section/section.module';
 import { CourseModule } from './modules/course/course.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRoot(databaseConfig),
-    TeacherModule,
-    StudentModule,
-    SectionModule,
-    CourseModule,
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
+        TypeOrmModule.forRoot(databaseConfig),
+        TeacherModule,
+        StudentModule,
+        SectionModule,
+        CourseModule,
+    ],
 })
 export class AppModule {}

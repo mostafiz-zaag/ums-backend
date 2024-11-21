@@ -13,7 +13,7 @@ export class Section {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ nullable: false })
     name: string;
 
     @ManyToOne(() => Course, (course) => course.sections)
